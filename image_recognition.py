@@ -1,8 +1,9 @@
-# import streamlit as st
+import streamlit as st
 from PIL import Image
 import numpy as np
 import tensorflow as tf
 import joblib
+import keras
 
 def preprocess_image(image):
     # Resize the image to 28x28 pixels
@@ -11,15 +12,21 @@ def preprocess_image(image):
     # Convert the resized image to grayscale
     grayscale_image = resized_image.convert('L')
 
-    # Flatten the image into a 1D array of 784 pixel values
-    flattened_image = np.array(grayscale_image).flatten()
+    # Convert the grayscale image to numpy array
+    image_array = np.array(grayscale_image)
 
-    return flattened_image
+    # Expand dimensions to add the channel dimension
+    image_array = np.expand_dims(image_array, axis=-1)
+
+    # Reshape the image to match the model's input shape (None, 28, 28, 1)
+    processed_image = image_array.reshape(1, 28, 28, 1)
+
+    return processed_image
 
 def load_model(uploaded_model):
     # Load the model from the uploaded .pkl file
     try:
-        model = joblib.load(uploaded_model)
+        model = keras.saving.load_model(uploaded_model)
         st.write("Model loaded successfully.")
     except Exception as e:
         st.write(f"Error loading model: {e}")
@@ -31,11 +38,8 @@ def predict_class(image, model):
     # Preprocess the image
     processed_image = preprocess_image(image)
 
-    # Reshape the image to match the model's input shape (1, 784)
-    input_image = processed_image.reshape(1, 784)
-
     # Normalize the input
-    input_image = input_image / 255.0
+    input_image = processed_image / 255.0
 
     # Make predictions
     predictions = model.predict(input_image)
@@ -49,14 +53,14 @@ def main():
     st.title("Image Transformation and Prediction")
 
     # Create a Streamlit file uploader for the model
-    uploaded_model = st.file_uploader( "Upload the joblib model", type=["pkl"])
+    uploaded_model = st.file_uploader( "Upload the model", type=["pkl", "keras"])
 
     # Create a Streamlit file uploader
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
     if uploaded_model is not None and uploaded_file is not None:
         # Load the model
-        model = load_model(uploaded_model)
+        model = load_model("model.keras")
 
         if model is not None:
             # Convert the uploaded file to PIL Image
