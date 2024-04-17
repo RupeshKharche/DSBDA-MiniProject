@@ -1,9 +1,8 @@
+import keras
+import numpy as np
 import streamlit as st
 from PIL import Image
-import numpy as np
-import tensorflow as tf
-import joblib
-import keras
+
 
 def preprocess_image(image):
     # Resize the image to 28x28 pixels
@@ -24,7 +23,7 @@ def preprocess_image(image):
     return processed_image
 
 def load_model(uploaded_model):
-    # Load the model from the uploaded .pkl file
+    # Load the model from the uploaded file
     try:
         model = keras.saving.load_model(uploaded_model)
         st.write("Model loaded successfully.")
@@ -50,10 +49,10 @@ def predict_class(image, model):
     return predicted_class
 
 def main():
-    st.title("Image Transformation and Prediction")
+    st.title("Sign Language Recognition")
 
     # Create a Streamlit file uploader for the model
-    uploaded_model = st.file_uploader( "Upload the model", type=["pkl", "keras"])
+    uploaded_model = st.file_uploader( "Upload the model", type=["keras"])
 
     # Create a Streamlit file uploader
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
