@@ -1,0 +1,5 @@
+streamlit~=1.29.0
+opencv-python~=4.9.0.80
+numpy~=1.26.2
+Pillow~=10.1.0
+keras~=2.15.0
