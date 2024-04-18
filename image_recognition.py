@@ -57,7 +57,7 @@ def main():
     # Create a Streamlit file uploader
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-    model = None
+    model = keras.models.Model()
 
     if uploaded_model is not None:
         # Load the model
