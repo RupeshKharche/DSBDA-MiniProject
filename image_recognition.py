@@ -57,10 +57,15 @@ def main():
     # Create a Streamlit file uploader
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-    if uploaded_model is not None and uploaded_file is not None:
-        # Load the model
-        model = load_model("model.keras")
+    model = None
 
+    if uploaded_model is not None:
+        # Load the model
+        model = load_model( uploaded_model )
+    else:
+        model = keras.saving.load_model("model.keras")
+
+    if uploaded_file is not None:
         if model is not None:
             # Convert the uploaded file to PIL Image
             pil_image = Image.open(uploaded_file)
