@@ -52,7 +52,7 @@ def main():
     st.title("Sign Language Recognition")
 
     # Create a Streamlit file uploader for the model
-    uploaded_model = st.file_uploader( "Upload the model", type=["keras"])
+    uploaded_model = st.file_uploader( "Upload your custom model (Optional)", type=["keras"])
 
     # Create a Streamlit file uploader
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
