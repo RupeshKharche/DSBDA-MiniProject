@@ -3,7 +3,6 @@ import numpy as np
 import streamlit as st
 from PIL import Image
 
-
 def preprocess_image(image):
     # Resize the image to 28x28 pixels
     resized_image = image.resize((28, 28))
@@ -80,6 +79,7 @@ def main():
             # Display the predicted class
             st.header("Predicted Class")
             st.write(f"The predicted class is: {predicted_class}")
+            st.write(f"The predicted alphabet is: {chr(65 + predicted_class)}")
 
 if __name__ == "__main__":
     main()
